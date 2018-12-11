@@ -7,7 +7,7 @@
       "tool_options": [
         {
           "index": 0,
-          "name": "Tool A",
+          "name": "ToolA",
           "image_file_path": "progressBar.png",
           "enabled": true,
           "ratchet_enabled": true
@@ -20,12 +20,19 @@
       "tool_options": [
         {
           "index": 1,
-          "name": "Tool B",
+          "name": "ToolB",
           "image_file_path": "numericUpDown.png",
           "enabled": true,
           "ratchet_enabled": false
         }
       ]
     }
+  ],
+  "tasks": [
+        {
+            "name": "changetoolvalue",
+            "win_id": "0x10064",
+            "mac_id": 615
+        },
   ]
 }
