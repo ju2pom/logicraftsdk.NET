@@ -1,0 +1,49 @@
+{
+  "GUID": "1CF0E277-919B-4DE4-B226-B41FEF915CFC",
+  "info": {
+    "name": "Craft Daemon",
+    "publisher": "Julien Amsellem",
+    "version": "1.0",
+    "win_name": "CraftDaemon.exe",
+
+    "mac_bundle": "",
+    "mac_path": "",
+    "mac_paths": [
+      {
+        "path": "",
+        "mac_minimum_supported_version": "",
+        "mac_maximum_supported_version": "",
+        "name_suffix": ""
+      },
+      {
+        "path": "",
+        "comment": "",
+        "mac_minimum_supported_version": "",
+        "mac_maximum_supported_version": "",
+        "name_suffix": ""
+      }
+    ],
+    "win_minimum_supported_version": "0.0.0",
+    "win_maximum_supported_version": "2017.0.1"
+  },
+  "crown": {
+    "rotate": {
+      "default_task": "changetoolvalue",
+      "tasks": [
+        "changetoolvalue"
+      ],
+      "short_list": [
+        "changetoolvalue"
+      ]
+    },
+    "press": {
+      "default_task": "playpause",
+      "tasks": [
+        "playpause"
+      ],
+      "short_list": [
+        "playpause"
+      ]
+    }
+  }
+}

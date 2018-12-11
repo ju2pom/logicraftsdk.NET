@@ -1,0 +1,31 @@
+{
+  "GUID": "1CF0E277-919B-4DE4-B226-B41FEF915CFC",
+  "tools": [
+    {
+      "name": "ToolA",
+      "enabled": true,
+      "tool_options": [
+        {
+          "index": 0,
+          "name": "Tool A",
+          "image_file_path": "progressBar.png",
+          "enabled": true,
+          "ratchet_enabled": true
+        }
+      ]
+    },
+    {
+      "name": "ToolB",
+      "enabled": true,
+      "tool_options": [
+        {
+          "index": 1,
+          "name": "Tool B",
+          "image_file_path": "numericUpDown.png",
+          "enabled": true,
+          "ratchet_enabled": false
+        }
+      ]
+    }
+  ]
+}
