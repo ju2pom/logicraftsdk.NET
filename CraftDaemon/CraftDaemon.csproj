@@ -47,6 +47,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="1CF0E277-919B-4DE4-B226-B41FEF915CFC\Languages\en.json" />
     <None Include="1CF0E277-919B-4DE4-B226-B41FEF915CFC\Manifest\defaults.json" />
     <None Include="1CF0E277-919B-4DE4-B226-B41FEF915CFC\Manifest\tools.json" />
     <None Include="App.config" />
@@ -58,4 +59,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /S /F /Y $(ProjectDir)1CF0E277-919B-4DE4-B226-B41FEF915CFC "C:\ProgramData\Logishrd\LogiOptionsPlugins\1CF0E277-919B-4DE4-B226-B41FEF915CFC"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

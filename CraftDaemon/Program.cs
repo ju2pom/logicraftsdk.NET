@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+
 using CraftSdk;
 
 namespace CraftDaemon
@@ -24,17 +25,17 @@ namespace CraftDaemon
             Console.WriteLine("Press escape to quit");
             Console.WriteLine("Use the Craft keyboard Crownd");
             ConsoleKeyInfo key;
+            
             do
             {
                 key = Console.ReadKey();
                 switch(key.Key)
                 {
                     case ConsoleKey.A:
-                        sdk.ChangeTool("ToolA");
-                        //sdk.GiveToolFeedback("Tool A", "quickLayout", "1");
+                        sdk.ChangeTool("ProgressBar");
                         break;
                     case ConsoleKey.B:
-                        sdk.ChangeTool("ToolB");
+                        sdk.ChangeTool("NumericUpDown");
                         //sdk.GiveToolFeedback("Tool B", "quickLayout", "2");
                         break;
                 }

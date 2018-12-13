@@ -144,8 +144,11 @@ namespace CraftSdk
             {
                 // save the session id as this is used for any communication with Logi Options 
                 sessionId = crownRootObject.session_id;
+                Console.WriteLine($"Register response: {crownRootObject.state}");
                 this.receivedAck = true;
             }
+
+            Console.WriteLine($"received: {crownRootObject.message_type}");
             this.autoResetEvent.Set();
         }
 
