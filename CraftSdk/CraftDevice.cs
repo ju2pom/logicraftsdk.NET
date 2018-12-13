@@ -3,28 +3,28 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net.WebSockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using WebSocketSharp;
 
 namespace CraftSdk
 {
     public class CraftDevice
     {
-        private WebSocket client;
+        private const int receiveChunkSize = 256;
 
+        private ClientWebSocket client;
         private string sessionId = "";
         private string host1 = "wss://echo.websocket.org";
         private string host = "ws://localhost:10134";
         private bool receivedAck;
-        private Task backgroundTask;
         private CancellationTokenSource cancellationTokenSource;
-        private AutoResetEvent autoResetEvent;
 
         public event Action<CrownRootObject> CrownTurned;
         public event Action<CrownRootObject> CrownTouched;
 
-        public bool TryRegister(Process process, Guid guid)
+        public async Task<bool> TryRegister(Process process, Guid guid)
         {
             // build the connection request packet 
             CrownRegisterRootObject registerRootObject = new CrownRegisterRootObject();
@@ -32,7 +32,6 @@ namespace CraftSdk
             registerRootObject.plugin_guid = guid.ToString();
             registerRootObject.execName = process.MainModule.ModuleName;
             registerRootObject.PID = Convert.ToInt32(process.Id);
-            string serializedObject = JsonConvert.SerializeObject(registerRootObject);
 
             // only connect to active session process
             registerRootObject.PID = Convert.ToInt32(process.Id);
@@ -40,8 +39,8 @@ namespace CraftSdk
 
             // if we are running in active session?
             if (process.SessionId == activeConsoleSessionId)
-            {  
-                this.client.Send(serializedObject);
+            {
+                await this.Send(registerRootObject);
 
                 return true;
             }
@@ -51,26 +50,26 @@ namespace CraftSdk
 
         public void Connect()
         {
-            if (this.backgroundTask != null && this.client.IsAlive)
+            if (this.client?.State == WebSocketState.Open)
             {
                 return;
             }
 
             this.cancellationTokenSource = new CancellationTokenSource();
-            this.backgroundTask = Task.Run(() => this.ConnectAndListen(), this.cancellationTokenSource.Token);
+            Task.Run(() => this.ConnectAndListen(), this.cancellationTokenSource.Token);
         }
 
-        public void Disconnect()
+        public async void Disconnect()
         {
             this.cancellationTokenSource.Cancel();
-            this.autoResetEvent.Set();
+            await this.client.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
         }
 
-        public bool IsConnected => this.client?.IsAlive == true && this.receivedAck;
+        public bool IsConnected => this.client?.State == WebSocketState.Open && this.receivedAck;
 
         public string LastErrorMessage { get; private set; }
 
-        public void ChangeTool(string toolName)
+        public async Task ChangeTool(string toolName)
         {
             try
             {
@@ -79,8 +78,7 @@ namespace CraftSdk
                 toolChangeObject.session_id = this.sessionId;
                 toolChangeObject.tool_id = toolName;
 
-                string serializedObject = JsonConvert.SerializeObject(toolChangeObject);
-                client.Send(serializedObject);
+                await this.Send(toolChangeObject);
             }
             catch (Exception ex)
             {
@@ -88,7 +86,7 @@ namespace CraftSdk
             }
         }
 
-        public void GiveToolFeedback(string toolName, string toolOption, string value)
+        public async void GiveToolFeedback(string toolName, string toolOption, string value)
         {
             ToolUpdateRootObject toolUpdateRootObject = new ToolUpdateRootObject
             {
@@ -99,28 +97,17 @@ namespace CraftSdk
                 tool_options = new List<ToolOption> { new ToolOption { name = toolOption, value = value } }
             };
 
-            string serialized = JsonConvert.SerializeObject(toolUpdateRootObject);
-            client.Send(serialized);
+            await this.Send(toolUpdateRootObject);
         }
 
         private void ConnectAndListen()
         {
             try
             {
-                this.client = new WebSocket(this.host);
+                this.client = new ClientWebSocket();
+                this.client.ConnectAsync(new Uri(this.host), CancellationToken.None).Wait();
 
-                client.OnOpen += this.OnOpen;
-                client.OnError += (ss, ee) => this.LastErrorMessage = ee.Message;
-                client.OnMessage += this.OnNewMessage;
-                client.OnClose += this.OnClose;
-                client.Connect();
-
-                autoResetEvent = new AutoResetEvent(false);
-                while (!this.cancellationTokenSource.Token.IsCancellationRequested)
-                {
-                    autoResetEvent.WaitOne();
-
-                }
+                Task.Run(this.Receive);
             }
             catch (Exception ex)
             {
@@ -128,10 +115,27 @@ namespace CraftSdk
             }
         }
 
-        private void OnNewMessage(object sender, MessageEventArgs e)
+        private async Task Receive()
         {
-            CrownRootObject crownRootObject = JsonConvert.DeserializeObject<CrownRootObject>(e.Data);
+            byte[] buffer = new byte[receiveChunkSize];
+            while (this.client.State == WebSocketState.Open)
+            {
+                var result = await this.client.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+                if (result.MessageType == WebSocketMessageType.Close)
+                {
+                    await this.client.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
+                }
+                else
+                {
+                    var message = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+                    CrownRootObject crownRootObject = JsonConvert.DeserializeObject<CrownRootObject>(message);
+                    this.OnNewMessage(crownRootObject);
+                }
+            }
+        }
 
+        private void OnNewMessage(CrownRootObject crownRootObject)
+        {
             if (crownRootObject.message_type == "crown_turn_event")
             {
                 this.CrownTurned?.Invoke(crownRootObject);
@@ -149,17 +153,15 @@ namespace CraftSdk
             }
 
             Console.WriteLine($"received: {crownRootObject.message_type}");
-            this.autoResetEvent.Set();
         }
 
-        private void OnOpen(object sender, EventArgs e)
+        private async Task Send(object registerRootObject)
         {
-            Console.WriteLine("Connection opened");
-        }
+            string serializedObject = JsonConvert.SerializeObject(registerRootObject);
+            var message = Encoding.ASCII.GetBytes(serializedObject);
+            var buffer = new ArraySegment<Byte>(message, 0, message.Length);
 
-        private void OnClose(object sender, CloseEventArgs e)
-        {
-            Console.WriteLine("Connection closed");
+            await this.client.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
         }
     }
 }

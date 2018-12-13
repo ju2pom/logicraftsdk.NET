@@ -14,7 +14,7 @@ namespace CraftDaemon
             var sdk = new CraftDevice();
             sdk.Connect();
 
-            if (sdk.TryRegister(Process.GetCurrentProcess(), ApplicationId))
+            if (sdk.TryRegister(Process.GetCurrentProcess(), ApplicationId).Result)
             {
                 sdk.CrownTouched += OnCrownTouched;
                 sdk.CrownTurned += OnCrownTurned;
