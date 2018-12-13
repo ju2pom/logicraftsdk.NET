@@ -14,15 +14,14 @@ namespace CraftDaemon
             var sdk = new CraftDevice();
             sdk.Connect();
 
-            Console.WriteLine("Connection ok");
             if (sdk.TryRegister(Process.GetCurrentProcess(), ApplicationId))
             {
-                Console.WriteLine("Application registered");
                 sdk.CrownTouched += OnCrownTouched;
                 sdk.CrownTurned += OnCrownTurned;
             }
 
-            Console.WriteLine("Press escape to quit");
+            Console.WriteLine("Press A to select Tool A");
+            Console.WriteLine("Press B to select Tool B");
             Console.WriteLine("Use the Craft keyboard Crownd");
             ConsoleKeyInfo key;
             
@@ -32,11 +31,10 @@ namespace CraftDaemon
                 switch(key.Key)
                 {
                     case ConsoleKey.A:
-                        sdk.ChangeTool("ProgressBar");
+                        sdk.ChangeTool("ToolA");
                         break;
                     case ConsoleKey.B:
-                        sdk.ChangeTool("NumericUpDown");
-                        //sdk.GiveToolFeedback("Tool B", "quickLayout", "2");
+                        sdk.ChangeTool("ToolB");
                         break;
                 }
             }

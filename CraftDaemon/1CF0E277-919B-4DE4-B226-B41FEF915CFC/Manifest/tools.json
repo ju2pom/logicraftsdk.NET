@@ -2,12 +2,12 @@
   "GUID": "1CF0E277-919B-4DE4-B226-B41FEF915CFC",
   "tools": [
     {
-      "name": "ProgressBar",
+      "name": "ToolA",
       "enabled": true,
       "tool_options": [
         {
           "index": 0,
-          "name": "progressBar",
+          "name": "toolA",
           "image_file_path": "progressBar.png",
           "enabled": true,
           "ratchet_enabled": false
@@ -15,143 +15,15 @@
       ]
     },
     {
-      "name": "NumericUpDown",
+      "name": "ToolB",
       "enabled": true,
       "tool_options": [
         {
           "index": 0,
-          "name": "numericUpDown",
+          "name": "toolB",
           "image_file_path": "numericUpDown.png",
           "enabled": true,
           "ratchet_enabled": false
-        }
-      ]
-    },
-    {
-      "name": "ListBox",
-      "enabled": true,
-      "tool_options": [
-        {
-          "index": 0,
-          "name": "listBox",
-          "image_file_path": "list.png",
-          "enabled": true,
-          "ratchet_enabled": false
-        }
-      ]
-    },
-    {
-      "name": "TextBox",
-      "enabled": true,
-      "tool_options": [
-        {
-          "index": 0,
-          "name": "textBoxHeight",
-          "image_file_path": "height.png",
-          "enabled": true,
-          "ratchet_enabled": false
-        },
-        {
-          "index": 1,
-          "name": "textBoxWidth",
-          "image_file_path": "width.png",
-          "enabled": true,
-          "ratchet_enabled": false,
-          "update_overlay_on_value_change": false
-        }
-      ]
-    },
-    {
-      "name": "ComboBox",
-      "enabled": true,
-      "tool_options": [
-        {
-          "index": 0,
-          "name": "comboBox",
-          "image_file_path": "dropdown.png",
-          "enabled": true,
-          "ratchet_enabled": false
-        }
-      ]
-    },
-    {
-      "name": "CheckedListBox",
-      "enabled": true,
-      "tool_options": [
-        {
-          "index": 0,
-          "name": "checkedListBox",
-          "image_file_path": "list.png",
-          "enabled": true,
-          "ratchet_enabled": false
-        }
-      ]
-    },
-    {
-      "name": "TrackBar",
-      "enabled": true,
-      "tool_options": [
-        {
-          "index": 0,
-          "name": "trackBar",
-          "image_file_path": "horizontal.png",
-          "enabled": true,
-          "ratchet_enabled": false
-        }
-      ]
-    },
-    {
-      "name": "TabControl",
-      "enabled": true,
-      "tool_options": [
-        {
-          "index": 0,
-          "name": "tabControl",
-          "image_file_path": "tabs.png",
-          "enabled": true,
-          "ratchet_enabled": true
-        }
-      ]
-    },
-    {
-      "name": "RichTextBox",
-      "enabled": true,
-      "tool_options": [
-        {
-          "index": 0,
-          "name": "richTextBox",
-          "image_file_path": "fontSize.png",
-          "enabled": true,
-          "ratchet_enabled": false
-        }
-      ]
-    },
-    {
-      "name": "NoSelection",
-      "enabled": true,
-      "tool_options": [
-        {
-          "index": 0,
-          "name": "zoom",
-          "image_file_path": "zoom.png",
-          "enabled": true,
-          "ratchet_enabled": false,
-          "update_overlay_on_value_change": false
-        },
-        {
-          "index": 1,
-          "name": "undoRedo",
-          "image_file_path": "undoRedo.png",
-          "enabled": true,
-          "ratchet_enabled": true,
-          "update_overlay_on_value_change": false
-        },
-        {
-          "index": 2,
-          "name": "pageNavigation",
-          "image_file_path": "sheetNavigation.png",
-          "enabled": true,
-          "ratchet_enabled": true
         }
       ]
     }
