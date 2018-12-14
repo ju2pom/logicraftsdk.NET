@@ -1,5 +1,4 @@
-﻿
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,57 +11,33 @@ namespace CraftSdk
 {
     public class CraftDevice
     {
-        private const int receiveChunkSize = 256;
+        private const int receiveChunkSize = 1024;
 
         private ClientWebSocket client;
         private string sessionId = "";
-        private string host1 = "wss://echo.websocket.org";
         private string host = "ws://localhost:10134";
         private bool receivedAck;
-        private CancellationTokenSource cancellationTokenSource;
 
         public event Action<CrownRootObject> CrownTurned;
         public event Action<CrownRootObject> CrownTouched;
 
-        public async Task<bool> TryRegister(Process process, Guid guid)
-        {
-            // build the connection request packet 
-            CrownRegisterRootObject registerRootObject = new CrownRegisterRootObject();
-            registerRootObject.message_type = "register";
-            registerRootObject.plugin_guid = guid.ToString();
-            registerRootObject.execName = process.MainModule.ModuleName;
-            registerRootObject.PID = Convert.ToInt32(process.Id);
-
-            // only connect to active session process
-            registerRootObject.PID = Convert.ToInt32(process.Id);
-            int activeConsoleSessionId = Win32.WTSGetActiveConsoleSessionId();
-
-            // if we are running in active session?
-            if (process.SessionId == activeConsoleSessionId)
-            {
-                await this.Send(registerRootObject);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        public void Connect()
+        public async Task Connect(Process process, Guid guid)
         {
             if (this.client?.State == WebSocketState.Open)
             {
                 return;
             }
 
-            this.cancellationTokenSource = new CancellationTokenSource();
-            Task.Run(() => this.ConnectAndListen(), this.cancellationTokenSource.Token);
+            this.ConnectAndListen();
+            await this.Register(process, guid);
         }
 
         public async void Disconnect()
         {
-            this.cancellationTokenSource.Cancel();
-            await this.client.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
+            if (this.client.State == WebSocketState.Open)
+            {
+                await this.client.CloseAsync(WebSocketCloseStatus.NormalClosure, string.Empty, CancellationToken.None);
+            }
         }
 
         public bool IsConnected => this.client?.State == WebSocketState.Open && this.receivedAck;
@@ -86,18 +61,25 @@ namespace CraftSdk
             }
         }
 
-        public async void GiveToolFeedback(string toolName, string toolOption, string value)
+        public async Task SetToolValue(string toolName, string toolOption, string value)
         {
-            ToolUpdateRootObject toolUpdateRootObject = new ToolUpdateRootObject
+            try
             {
-                tool_id = toolName,
-                message_type = "tool_update",
-                session_id = sessionId,
-                show_overlay = "true",
-                tool_options = new List<ToolOption> { new ToolOption { name = toolOption, value = value } }
-            };
+                ToolUpdateRootObject toolUpdateRootObject = new ToolUpdateRootObject
+                {
+                    tool_id = toolName,
+                    message_type = "tool_update",
+                    session_id = sessionId,
+                    show_overlay = "true",
+                    tool_options = new List<ToolOption> { new ToolOption { name = toolOption, value = value } }
+                };
 
-            await this.Send(toolUpdateRootObject);
+                await this.Send(toolUpdateRootObject);
+            }
+            catch(Exception ex)
+            {
+                this.LastErrorMessage = ex.Message;
+            }
         }
 
         private void ConnectAndListen()
@@ -115,6 +97,25 @@ namespace CraftSdk
             }
         }
 
+        private async Task Register(Process process, Guid guid)
+        {
+            CrownRegisterRootObject registerRootObject = new CrownRegisterRootObject();
+            registerRootObject.message_type = "register";
+            registerRootObject.plugin_guid = guid.ToString();
+            registerRootObject.execName = process.MainModule.ModuleName;
+            registerRootObject.PID = Convert.ToInt32(process.Id);
+
+            // only connect to active session process
+            registerRootObject.PID = Convert.ToInt32(process.Id);
+            int activeConsoleSessionId = Win32.WTSGetActiveConsoleSessionId();
+
+            // if we are running in active session?
+            if (process.SessionId == activeConsoleSessionId)
+            {
+                await this.Send(registerRootObject);
+            }
+        }
+
         private async Task Receive()
         {
             byte[] buffer = new byte[receiveChunkSize];
@@ -127,7 +128,7 @@ namespace CraftSdk
                 }
                 else
                 {
-                    var message = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+                    var message = Encoding.ASCII.GetString(buffer, 0, result.Count);
                     CrownRootObject crownRootObject = JsonConvert.DeserializeObject<CrownRootObject>(message);
                     this.OnNewMessage(crownRootObject);
                 }
@@ -148,11 +149,8 @@ namespace CraftSdk
             {
                 // save the session id as this is used for any communication with Logi Options 
                 sessionId = crownRootObject.session_id;
-                Console.WriteLine($"Register response: {crownRootObject.state}");
                 this.receivedAck = true;
             }
-
-            Console.WriteLine($"received: {crownRootObject.message_type}");
         }
 
         private async Task Send(object registerRootObject)
