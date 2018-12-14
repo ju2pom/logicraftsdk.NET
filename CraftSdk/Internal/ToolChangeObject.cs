@@ -1,6 +1,6 @@
-﻿namespace CraftSdk
+﻿namespace CraftSdk.Internal
 {
-    public class ToolChangeObject
+    internal class ToolChangeObject
     {
         public string message_type { get; set; }
         public string session_id { get; set; }

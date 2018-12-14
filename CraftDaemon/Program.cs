@@ -39,14 +39,14 @@ namespace CraftDaemon
             sdk.Disconnect();
         }
 
-        private static void OnCrownTurned(CrownRootObject obj)
+        private static void OnCrownTurned(Crown crown)
         {
-            Console.WriteLine($"Turned: {obj.delta} - {obj.touch_state}");
+            Console.WriteLine($"Turned: {crown.Delta}");
         }
 
-        private static void OnCrownTouched(CrownRootObject obj)
+        private static void OnCrownTouched(Crown crown)
         {
-            Console.WriteLine($"Touched: {obj.delta} - {obj.touch_state}");
+            Console.WriteLine($"Touched: {crown.IsTouched}");
         }
     }
 }

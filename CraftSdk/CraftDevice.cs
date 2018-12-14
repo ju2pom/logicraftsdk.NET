@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+using CraftSdk.Internal;
+
 namespace CraftSdk
 {
     public class CraftDevice
@@ -18,8 +20,8 @@ namespace CraftSdk
         private string host = "ws://localhost:10134";
         private bool receivedAck;
 
-        public event Action<CrownRootObject> CrownTurned;
-        public event Action<CrownRootObject> CrownTouched;
+        public event Action<Crown> CrownTurned;
+        public event Action<Crown> CrownTouched;
 
         public async Task Connect(Process process, Guid guid)
         {
@@ -139,11 +141,11 @@ namespace CraftSdk
         {
             if (crownRootObject.message_type == "crown_turn_event")
             {
-                this.CrownTurned?.Invoke(crownRootObject);
+                this.CrownTurned?.Invoke(new Crown(crownRootObject));
             }
             else if (crownRootObject.message_type == "crown_touch_event")
             {
-                this.CrownTouched?.Invoke(crownRootObject);
+                this.CrownTouched?.Invoke(new Crown(crownRootObject));
             }
             else if (crownRootObject.message_type == "register_ack")
             {

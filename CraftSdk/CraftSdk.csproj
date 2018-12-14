@@ -45,14 +45,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CraftDevice.cs" />
-    <Compile Include="ToolChangeObject.cs" />
-    <Compile Include="CrownRootObject.cs" />
-    <Compile Include="TaskOptions.cs" />
-    <Compile Include="CrownRegisterRootObject.cs" />
-    <Compile Include="ToolOption.cs" />
-    <Compile Include="ToolUpdateRootObject.cs" />
+    <Compile Include="Crown.cs" />
+    <Compile Include="Internal\ToolChangeObject.cs" />
+    <Compile Include="Internal\CrownRootObject.cs" />
+    <Compile Include="Internal\TaskOptions.cs" />
+    <Compile Include="Internal\CrownRegisterRootObject.cs" />
+    <Compile Include="Internal\ToolOption.cs" />
+    <Compile Include="Internal\ToolUpdateRootObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Win32.cs" />
+    <Compile Include="Internal\Win32.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
