@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-
-namespace CraftSdk
+namespace CraftSdk.Internal
 {
-    public class ToolUpdateRootObject
+    internal class ToolUpdateRootObject
     {
         public string message_type { get; set; }
         public string session_id { get; set; }

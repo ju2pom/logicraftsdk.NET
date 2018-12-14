@@ -1,6 +1,6 @@
-﻿namespace CraftSdk
+﻿namespace CraftSdk.Internal
 {
-    public class CrownRegisterRootObject
+    internal class CrownRegisterRootObject
     {
         public string message_type { get; set; }
         public string plugin_guid { get; set; }

@@ -12,13 +12,9 @@ namespace CraftDaemon
         static void Main(string[] args)
         {
             var sdk = new CraftDevice();
-            sdk.Connect();
-
-            if (sdk.TryRegister(Process.GetCurrentProcess(), ApplicationId))
-            {
-                sdk.CrownTouched += OnCrownTouched;
-                sdk.CrownTurned += OnCrownTurned;
-            }
+            sdk.Connect(Process.GetCurrentProcess(), ApplicationId).Wait();
+            sdk.CrownTouched += OnCrownTouched;
+            sdk.CrownTurned += OnCrownTurned;
 
             Console.WriteLine("Press A to select Tool A");
             Console.WriteLine("Press B to select Tool B");
@@ -31,10 +27,10 @@ namespace CraftDaemon
                 switch(key.Key)
                 {
                     case ConsoleKey.A:
-                        sdk.ChangeTool("ToolA");
+                        sdk.ChangeTool("ToolA").Wait();
                         break;
                     case ConsoleKey.B:
-                        sdk.ChangeTool("ToolB");
+                        sdk.ChangeTool("ToolB").Wait();
                         break;
                 }
             }
@@ -43,14 +39,14 @@ namespace CraftDaemon
             sdk.Disconnect();
         }
 
-        private static void OnCrownTurned(CrownRootObject obj)
+        private static void OnCrownTurned(Crown crown)
         {
-            Console.WriteLine($"Turned: {obj.delta} - {obj.touch_state}");
+            Console.WriteLine($"Turned: {crown.Delta}");
         }
 
-        private static void OnCrownTouched(CrownRootObject obj)
+        private static void OnCrownTouched(Crown crown)
         {
-            Console.WriteLine($"Touched: {obj.delta} - {obj.touch_state}");
+            Console.WriteLine($"Touched: {crown.IsTouched}");
         }
     }
 }

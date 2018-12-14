@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace CraftSdk
+namespace CraftSdk.Internal
 {
-    public class CrownRootObject
+    internal class CrownRootObject
     {
         public string message_type { get; set; }
         public int device_id { get; set; }
