@@ -34,4 +34,6 @@ sdk.Disconnect();
 In order to let _Logitech Option_ to know about your plugin/application you need to follow the instructions from official logitech documentation [here](https://github.com/Logitech/logi_craft_sdk/blob/master/samples/WinFormsCrownSample/README.md)
 
 I would advise you to use the sample console application in this repository as a starting point to understand more easily the relationship between the tools.json file and the application.
-You''l notice that the sample application I made has a post-build event to copy the necessary files at the right place. **But** at least you'll need to uninstall and reinstall your plugin in the _Logitech Options_ software.  My experience with this process told me that you'd better restart the computer each time you change the manifest files.
+You''l notice that the sample application I made has a post-build event to copy the necessary files at the right place.
+
+**But** at least you'll need to uninstall and reinstall your plugin in the _Logitech Options_ software.  My experience with this process told me that you'd better restart the computer each time you change the manifest files.
