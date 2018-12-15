@@ -1,3 +1,6 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/lqoobvh6aicevwvu/branch/master?svg=true)](https://ci.appveyor.com/project/ju2pom/logicraftsdk-net/branch/master)
+[![NuGet](https://img.shields.io/nuget/v/LogiCraftsSk.Net.svg?style=flat)]()
+
 # logicraftsdk.NET
 This is a .NET SDK to control the Logitech Craft keyboard "Crown" (the knob on the picture below)
 ![enter image description here](https://github.com/Logitech/logi_craft_sdk/blob/master/documentation/assets/craft.png)
