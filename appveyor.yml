@@ -1,0 +1,18 @@
+version: 1.0.{build}
+configuration: Release
+platform: AnyCpu
+
+before_build:
+  - cmd: nuget restore
+
+build:
+  verbosity: minimal
+  project: CraftSdk/CraftSdk.csproj
+
+after_build:
+  - nuget pack CraftSdk/CraftSdk.nuspec -Version %appveyor_build_version%
+
+artifacts:
+  - path: LogiCraftsSk.Net*.nupkg
+    name: LogiCraftsSk.Net nuget package
+    type: NuGetPackage

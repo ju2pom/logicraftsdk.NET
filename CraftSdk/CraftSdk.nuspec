@@ -14,6 +14,6 @@
     <tags>Logitech Craft Crown Keyboard</tags>
   </metadata>
   <files>
-    <file src="..\CraftSdk\bin\Release\" target="lib" />
+    <file src="bin\Release\CraftSdk.dll" target="lib" />
   </files>
 </package>
