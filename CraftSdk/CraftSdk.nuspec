@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>LogiCraftsSk.Net</id>
+    <version>1.0.0</version>
+    <title>LogiCraftsSk.Net</title>
+    <authors>ju2pom</authors>
+    <owners>ju2pom</owners>
+    <projectUrl>https://github.com/ju2pom/logicraftsdk.NET</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This is a .NET SDK to control the Logitech Craft keyboard "Crown"</description>
+    <copyright>Copyright ©  2018</copyright>
+    <releaseNotes>First release</releaseNotes>
+    <tags>Logitech Craft Crown Keyboard</tags>
+  </metadata>
+  <files>
+    <file src="..\CraftSdk\bin\Release\" target="lib" />
+  </files>
+</package>

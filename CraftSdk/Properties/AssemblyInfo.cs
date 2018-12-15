@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
 // associées à un assembly.
 [assembly: AssemblyTitle("CraftSdk")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("This is a .NET SDK to control the Logitech Craft keyboard `Crown`")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("CraftSdk")]
