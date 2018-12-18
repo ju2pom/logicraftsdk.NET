@@ -1,5 +1,5 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/lqoobvh6aicevwvu/branch/master?svg=true)](https://ci.appveyor.com/project/ju2pom/logicraftsdk-net/branch/master)
-[![NuGet](https://img.shields.io/nuget/v/LogiCraftSdk.Net.png?logo=Nuget&style=flat&colorB=blue&logoColor=white)]()
+[![NuGet](https://img.shields.io/nuget/v/LogiCraftSdk.Net.png?logo=Nuget&style=flat&colorB=blue&logoColor=white)](https://www.nuget.org/packages/LogiCraftSdk.Net/)
           
 
 # logicraftsdk.NET
