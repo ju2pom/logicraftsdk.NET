@@ -1,4 +1,4 @@
-version: 1.0.{build}
+version: 0.1.{build}
 configuration: Release
 platform: AnyCpu
 
@@ -13,6 +13,6 @@ after_build:
   - nuget pack CraftSdk/CraftSdk.nuspec -Version %appveyor_build_version%
 
 artifacts:
-  - path: LogiCraftsSk.Net*.nupkg
-    name: LogiCraftsSk.Net nuget package
+  - path: LogiCraftSdk.Net*.nupkg
+    name: LogiCraftSdk.Net nuget package
     type: NuGetPackage

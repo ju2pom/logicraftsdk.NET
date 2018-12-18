@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>LogiCraftsSk.Net</id>
+    <id>LogiCraftSdk.Net</id>
     <version>1.0.0</version>
-    <title>LogiCraftsSk.Net</title>
+    <title>LogiCraftSdk.Net</title>
     <authors>ju2pom</authors>
     <owners>ju2pom</owners>
     <projectUrl>https://github.com/ju2pom/logicraftsdk.NET</projectUrl>
